@@ -4,7 +4,7 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/drug?useUnicode=true&characterEncoding=utf8&useSSL=true&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/travel_predict?useUnicode=true&characterEncoding=utf8&useSSL=true&serverTimezone=UTC
     username: root
     password: 19990501
     type: com.alibaba.druid.pool.DruidDataSource

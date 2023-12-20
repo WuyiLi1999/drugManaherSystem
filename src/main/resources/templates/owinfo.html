@@ -2,7 +2,7 @@
 <html lang="zh_CN" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>药品出入库信息管理</title>
+    <title>用户基础信息管理</title>
     <link rel="stylesheet" th:href="@{/static/layui/css/layui.css}" media="all">
     <link rel="stylesheet" th:href="@{/static/admin/style.css}" media="all">
     <script type="text/html" id="indexTpl">
@@ -14,13 +14,13 @@
         <div class="layui-row layui-col-space15">
             <div class="layui-col-md12">
                 <div class="layui-card">
-                    <div class="layui-card-header">药品出入库信息列表</div>
+                    <div class="layui-card-header">用户基础信息列表</div>
                     <div class="layui-card-body">
                         <table class="layui-hide" id="main-table" lay-filter="main-table"></table>
                         <script type="text/html" id="toolbarDemo">
                             <span class="layui-inline" lay-event="add"><i class="layui-icon">&#xe654;</i> </span>
                             <span class="layui-inline" style="width: 240px;">
-                                <input class="layui-input" name="param" id="param" placeholder="根据药品名称查询" autocomplete="off">
+                                <input class="layui-input" name="param" id="param" placeholder="根据用户id关键字搜索" autocomplete="off">
                             </span>
                             <span class="layui-btn layui-btn-sm layui-bg-red" lay-event="querySearch">
                                 <i class="layui-icon">&#xe615;</i>查询
@@ -43,7 +43,7 @@
             table.render({
                 elem: '#main-table',
                 height: 650,
-                url: '/owinfo/owinfoQueryPage',
+                url: '/userInformation/query_list',
                 method: 'POST',
                 page: true,
                 id: 'table-load',
@@ -51,12 +51,16 @@
                 cols: [
                     [
                     {title: '序号',templet: '#indexTpl',width: 60,align:'center'},
-                    {field:'dname',title:'药品名称',algin:'center'},
-                    {field:'type',title:'出库/入库',algin:'center'},
-                    {field:'count',title:'数量',algin:'center'},
-                    {field:'operator',title:'操作人',algin:'center'},
-                    {field:'createtime',title:'操作时间',algin:'center',
-                    templet:"<div>{{layui.util.toDateString(d.createtime,'yyyy-MM-dd HH:mm:ss')}}</div>"},
+                    {field:'userId',title:'用户Id',algin:'center'},
+                    {field:'age',title:'年龄',algin:'center'},
+                    {field:'sex==0?"女":"男"',title:'性别',algin:'center'},
+                    {field:'countryName',title:'区县',algin:'center'},
+                    {field:'isMarr',title:'是否已婚',algin:'center'},
+                    {field:'fertile',title:'是否已育',algin:'center'},
+                    {field:'haveOld',title:'是否有老人',algin:'center'},
+                    {field:'haveCar',title:'是否购车',algin:'center'},
+                    {field:'incomeLevel',title:'收入水平',algin:'center'},
+                    {field:'firImelBrand',title:'手机品牌',algin:'center'},
                     {title:'操作',align:'center',toolbar:'#barDemo',fixed:'right'}
                     ]
                 ]
@@ -68,8 +72,8 @@
                     case 'add':
                         layer.open({
                             type: 2,
-                            title: '新增药品出入库信息',
-                            content: '/owinfo/owinfoPage',
+                            title: '数据导入',
+                            content: '/userInformation/importData',
                             shade:[0.8,'#393d49'],
                             area:['600px','530px'],
                             btn:['确定','取消'],
@@ -78,10 +82,9 @@
                                 var submit = layero.find('iframe').contents().find("#LAY-front-submit");
                                 //监听提交
                                 iframeWindow.layui.form.on('submit(LAY-front-submit)',function (data) {
-                                    var field = data.field;
+                                    var field = data.field.urlPath;
                                     $.ajax({
-                                        url: '/owinfo/owinfoAdd',
-                                        data: field,
+                                        url: '/userInformation/loadDataToDateBase?url='+field,
                                         async: false,
                                         cache: false,
                                         success: function (str) {

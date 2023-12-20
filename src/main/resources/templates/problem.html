@@ -2,7 +2,7 @@
 <html lang="zh_CN" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>问题药品信息管理</title>
+    <title>上网信息管理</title>
     <link rel="stylesheet" th:href="@{/static/layui/css/layui.css}" media="all">
     <link rel="stylesheet" th:href="@{/static/admin/style.css}" media="all">
     <script type="text/html" id="indexTpl">
@@ -14,13 +14,13 @@
         <div class="layui-row layui-col-space15">
             <div class="layui-col-md12">
                 <div class="layui-card">
-                    <div class="layui-card-header">问题药品信息列表</div>
+                    <div class="layui-card-header">上网信息列表</div>
                     <div class="layui-card-body">
                         <table class="layui-hide" id="main-table" lay-filter="main-table"></table>
                         <script type="text/html" id="toolbarDemo">
                             <span class="layui-inline" lay-event="add"><i class="layui-icon">&#xe654;</i> </span>
                             <span class="layui-inline" style="width: 240px;">
-                                <input class="layui-input" name="param" id="param" placeholder="根据药品名称查询" autocomplete="off">
+                                <input class="layui-input" name="param" id="param" placeholder="根据用户ID查询" autocomplete="off">
                             </span>
                             <span class="layui-btn layui-btn-sm layui-bg-red" lay-event="querySearch">
                                 <i class="layui-icon">&#xe615;</i>查询
@@ -43,7 +43,7 @@
             table.render({
                 elem: '#main-table',
                 height: 650,
-                url: '/problem/problemQueryPage',
+                url: '/internetInformation/getInternetInformationList',
                 method: 'POST',
                 page: true,
                 id: 'table-load',
@@ -51,11 +51,17 @@
                 cols: [
                     [
                     {title: '序号',templet: '#indexTpl',width: 60,align:'center'},
-                    {field:'dname',title:'药品名称',algin:'center'},
-                    {field:'dcount',title:'问题药品数量',algin:'center'},
-                    {field:'dprice',title:'药品单价',algin:'center'},
-                    {field:'createtime',title:'操作时间',algin:'center',
-                    templet:"<div>{{layui.util.toDateString(d.createtime,'yyyy-MM-dd HH:mm:ss')}}</div>"},
+                    {field:'userId',title:'用户ID',algin:'center'},
+                    {field:'monthlyMobileDataUsage',title:'当月移动数据上网流量',algin:'center'},
+                    {field:'monthlyTravelAppVisits',title:'当月旅游类APP访问次数',algin:'center'},
+                    {field:'monthlyHotelAppVisits',title:'当月酒店类APP访问次数',algin:'center'},
+                    {field:'monthlyVideoAppVisits',title:'当月视频类APP访问次数',algin:'center'},
+                    {field:'monthlyMusicAppVisits',title:'当月音乐类APP访问次数',algin:'center'},
+                    {field:'monthlyOnlineShoppingAppVisits',title:'当月网购类APP访问次数',algin:'center'},
+                    {field:'monthlyTravelPublicAccountVisits',title:'当月旅游类公众号访问次数',algin:'center'},
+                    {field:'monthlyHotelPublicAccountVisits',title:'当月酒店类公众号访问次数',algin:'center'},
+                    {field:'monthlyTravelKeywordSearches',title:'当月旅游相关关键词搜索次数',algin:'center'},
+                    {field:'monthlyHotelKeywordSearches',title:'当月酒店相关关键词搜索次数',algin:'center'},
                     {title:'操作',align:'center',toolbar:'#barDemo',fixed:'right'}
                     ]
                 ]
@@ -68,7 +74,7 @@
                         layer.open({
                             type: 2,
                             title: '新增问题药品信息',
-                            content: '/problem/problemPage',
+                            content: '/internetInformation/importData',
                             shade:[0.8,'#393d49'],
                             area:['600px','530px'],
                             btn:['确定','取消'],
@@ -77,10 +83,9 @@
                                 var submit = layero.find('iframe').contents().find("#LAY-front-submit");
                                 //监听提交
                                 iframeWindow.layui.form.on('submit(LAY-front-submit)',function (data) {
-                                    var field = data.field;
+                                    var field = data.field.urlPath;
                                     $.ajax({
-                                        url: '/problem/problemAdd',
-                                        data: field,
+                                        url: '/internetInformation/loadFileData?url='+field,
                                         async: false,
                                         cache: false,
                                         success: function (str) {

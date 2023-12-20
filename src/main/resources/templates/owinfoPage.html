@@ -11,36 +11,15 @@
         <div class="layui-card">
             <div class="layui-card-body" style="padding: 15px;">
                 <form class="layui-form layui-form-pane" action="">
-                    <input name="id" th:value="${obj?.id}" class="layui-input layui-hide"/>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">药品名称</label>
-                        <div class="layui-input-block">
-                            <select name="dname" id="dname"></select>
-                        </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">出入库类型</label>
-                        <div class="layui-input-block" th:style="'display:' + @{(${obj?.type != null} ? 'none' : '')} + ''">
-                            <input type="radio" name="type" value="出库" title="出库">
-                            <input type="radio" name="type" value="入库" title="入库">
-                        </div>
-                        <div class="layui-input-block" th:style="'display:' + @{(${obj?.type == null} ? 'none' : '')} + ''">
-                            <input type="text" th:value="${obj?.type}" class="layui-input" disabled>
-                        </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">数量</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="count" th:value="${obj?.count}" lay-verify="required" placeholder="请输入数量" autocomplete="off" class="layui-input">
-                        </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">操作人</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="operator" th:value="${obj?.operator}" lay-verify="required" placeholder="请输入操作人" autocomplete="off" class="layui-input">
-                        </div>
-                    </div>
 
+                    <div class="layui-form-item">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">文件路径</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="urlPath"  lay-verify="required" placeholder="请输入文件路径" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                    </div>
                     <div class="layui-form-item layui-hide">
                         <input type="button" lay-submit lay-filter="LAY-front-submit" id="LAY-front-submit" value="确认">
                     </div>

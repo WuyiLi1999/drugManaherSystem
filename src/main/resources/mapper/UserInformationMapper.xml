@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.javaclimb.drug.mapper.UserInformationMapper">
+
+    <insert id="batchInsertUserInformation" parameterType="com.javaclimb.drug.entity.UserInformation">
+        insert into user_information
+            (user_id,age,sex,city_name,country_name,inner_dur,is_marr,fertile,have_old,have_car,income_level,fir_imel_brand,fir_imel_price)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.userId},#{item.age},#{item.sex},#{item.cityName},#{item.countryName},#{item.innerDur},#{item.isMarr},
+             #{item.fertile},#{item.haveOld},#{item.haveCar},#{item.incomeLevel},#{item.firImelBrand},#{item.firImelPrice})
+        </foreach>
+    </insert>
+    <select id="getInformationList" resultType="com.javaclimb.drug.entity.UserInformation">
+        select * from user_information
+        <where>
+            <if test="req != null">
+                <if test="req.userId != null">
+                    AND user_id LIKE CONCAT('%', #{req.userId}, '%')
+                </if>
+                <if test="req.sex != null and req.sex != 3">
+                    AND sex = #{req.sex}
+                </if>
+                <if test="req.countryName != null and req.countryName != '0'">
+                    AND country_name = #{req.countryName}
+                </if>
+            </if>
+        </where>
+        <if test="orderUtil != null">
+            ORDER BY ${orderUtil.orderBy}
+            <if test="orderUtil.isDesc">desc</if>
+        </if>
+        <if test="pageUtil != null">
+            LIMIT #{pageUtil.pageStart},#{pageUtil.count}
+        </if>
+    </select>
+
+    <select id="getUserInformationCount" resultType="int">
+        select count(*) from user_information
+        <where>
+            <if test="req != null">
+                <if test="req.userId != null">
+                    AND user_id LIKE CONCAT('%', #{req.userId}, '%')
+                </if>
+                <if test="req.sex != null and req.sex != 3">
+                    AND sex = #{req.sex}
+                </if>
+                <if test="req.countryName != null and req.countryName != '0'">
+                    AND country_name = #{req.countryName}
+                </if>
+            </if>
+        </where>
+    </select>
+
+</mapper>

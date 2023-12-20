@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.javaclimb.drug.mapper.TravelPredictMapper">
+    <insert id="saveToDatabase" parameterType="com.javaclimb.drug.entity.TravelPredict">
+
+        insert into predict_result (user_id,flag)
+        value
+            (#{travelPredict.userId},#{travelPredict.flag})
+    </insert>
+    <insert id="batchInsertDataToDataBase">
+        insert into predict_result (user_id,flag)
+        values
+        <foreach collection="predictList" item="item" index="index" separator=",">
+            (#{item.userId},#{item.flag})
+        </foreach>
+    </insert>
+</mapper>
